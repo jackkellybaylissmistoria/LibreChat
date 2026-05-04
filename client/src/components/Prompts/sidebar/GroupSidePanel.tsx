@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom';
+import { FileText } from 'lucide-react';
 import { Button, Sidebar, TooltipAnchor } from '@librechat/client';
 import { usePromptGroupsContext } from '~/Providers';
 import { useLocalize } from '~/hooks';
@@ -30,30 +31,54 @@ export default function GroupSidePanel({
   const { promptGroups, groupsQuery, nextPage, prevPage, hasNextPage, hasPreviousPage } = context;
 
   return (
-    <div id="prompts-panel" className={cn('flex h-full w-full flex-col', className)}>
-      {onClose && (
-        <div className="flex items-center justify-end px-2 py-[2px] md:py-2">
+    <div
+      id="prompts-panel"
+      className={cn(
+        'relative flex h-full w-full flex-col bg-surface-primary/85 backdrop-blur-md',
+        'border-r border-border-light/50 dark:border-border-medium/40',
+        className,
+      )}
+    >
+      {/* Header band */}
+      <div className="relative flex shrink-0 items-center gap-2 border-b border-border-light/50 px-3 py-2.5 dark:border-border-medium/40">
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-primary/[0.04] to-transparent dark:from-primary/[0.06]"
+        />
+        <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-border-light/70 bg-surface-tertiary/40 text-primary dark:border-border-medium/55">
+          <FileText className="size-4" aria-hidden="true" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <h2 className="font-display text-sm font-semibold tracking-tight text-text-primary">
+            {localize('com_ui_prompts')}
+          </h2>
+          <p className="truncate text-[11px] text-text-tertiary">
+            {localize('com_ui_create_prompt_page')}
+          </p>
+        </div>
+        {onClose && (
           <TooltipAnchor
             description={localize('com_nav_close_sidebar')}
             render={
               <Button
                 ref={closePanelRef}
                 size="icon"
-                variant="outline"
+                variant="ghost"
                 data-testid="close-prompts-panel-button"
                 aria-label={localize('com_nav_close_sidebar')}
                 aria-expanded={true}
-                className="rounded-full border-none bg-transparent p-2 hover:bg-surface-hover md:rounded-xl"
+                className="h-8 w-8 rounded-lg text-text-tertiary transition-colors duration-150 hover:bg-surface-tertiary/60 hover:text-text-primary"
                 onClick={onClose}
               >
-                <Sidebar />
+                <Sidebar className="size-4" />
               </Button>
             }
           />
-        </div>
-      )}
+        )}
+      </div>
+
       <div className="relative flex min-h-0 flex-1 flex-col">
-        <div className="scrollbar-gutter-stable flex h-full min-h-0 flex-col gap-2 overflow-y-auto overflow-x-hidden pl-3 pr-1 text-text-primary">
+        <div className="scrollbar-gutter-stable flex h-full min-h-0 flex-col gap-2 overflow-y-auto overflow-x-hidden px-3 pb-2 pt-3 text-text-primary">
           <div className="shrink-0 space-y-2">{children}</div>
           <List
             groups={promptGroups}
@@ -63,7 +88,7 @@ export default function GroupSidePanel({
         </div>
         <div
           className={cn(
-            'pointer-events-none inset-x-0 bottom-0 bg-gradient-to-t from-surface-primary-alt from-60% to-transparent px-3 pb-2',
+            'pointer-events-none inset-x-0 bottom-0 bg-gradient-to-t from-surface-primary from-60% to-transparent px-3 pb-3 pt-2',
           )}
         >
           <div className="pointer-events-auto">

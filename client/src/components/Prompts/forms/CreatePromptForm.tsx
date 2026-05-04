@@ -112,58 +112,83 @@ const CreatePromptForm = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full px-4 py-2">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full px-4 py-6 e1-fade-up md:px-6 md:py-8"
+        data-testid="create-prompt-form"
+      >
         <h1 className="sr-only">{localize('com_ui_create_prompt_page')}</h1>
-        <div className="mb-2 flex items-center justify-between gap-2 sm:hidden">
+
+        {/* Mobile header bar */}
+        <div className="mb-4 flex items-center justify-between gap-2 sm:hidden">
           <OpenSidebar />
           <CategorySelector />
         </div>
-        <div className="mb-1 flex flex-col items-center justify-between font-bold sm:text-xl md:mb-0 md:text-2xl">
-          <div className="flex w-full flex-col items-center justify-between sm:flex-row">
-            <Controller
-              name="name"
-              control={control}
-              rules={{ required: localize('com_ui_prompt_name_required') }}
-              render={({ field }) => (
-                <div className="relative mb-1 flex w-full flex-col sm:w-auto md:mb-0">
-                  <Input
-                    {...field}
-                    id="prompt-name"
-                    type="text"
-                    className="peer mr-2 w-full border border-border-medium p-2 text-2xl text-text-primary"
-                    placeholder=" "
-                    tabIndex={0}
-                    aria-label={localize('com_ui_prompt_name')}
-                    aria-required="true"
-                  />
-                  <label
-                    htmlFor="prompt-name"
-                    className="pointer-events-none absolute -top-1 left-3 origin-[0] translate-y-3 scale-100 rounded bg-presentation px-1 text-base text-text-secondary transition-transform duration-200 peer-placeholder-shown:translate-y-3 peer-placeholder-shown:scale-100 peer-focus:-translate-y-2 peer-focus:scale-75 peer-focus:text-text-primary peer-[:not(:placeholder-shown)]:-translate-y-2 peer-[:not(:placeholder-shown)]:scale-75"
-                  >
-                    {localize('com_ui_prompt_name')}*
-                  </label>
-                  <div
-                    className={cn(
-                      'mt-1 w-56 text-sm text-red-500',
-                      errors.name ? 'visible h-auto' : 'invisible h-0',
-                    )}
-                  >
-                    {errors.name ? errors.name.message : ' '}
-                  </div>
-                </div>
-              )}
-            />
-            <div className="hidden sm:block">
-              <CategorySelector />
+
+        {/* Page header band */}
+        <div className="mb-6 flex flex-col items-start justify-between gap-4 border-b border-border-light/60 pb-4 sm:flex-row sm:items-center">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border-light/70 bg-surface-tertiary/40 text-primary">
+              <FileText className="size-5" aria-hidden />
+            </div>
+            <div>
+              <h2 className="font-display text-lg font-medium tracking-tight text-text-primary md:text-xl">
+                {localize('com_ui_create_prompt_page')}
+              </h2>
+              <p className="text-xs text-text-tertiary">
+                {localize('com_ui_prompt_input')}
+              </p>
             </div>
           </div>
+          <div className="hidden sm:block">
+            <CategorySelector />
+          </div>
         </div>
-        <div className="flex w-full flex-col gap-4 md:mt-[1.075rem]">
-          <div className="flex flex-col">
-            <header className="flex items-center justify-between rounded-t-xl border border-border-medium bg-transparent p-2">
-              <div className="ml-1 flex items-center gap-2">
-                <FileText className="size-4 text-text-secondary" aria-hidden="true" />
-                <h2 className="text-sm font-semibold text-text-primary">
+
+        {/* Name field */}
+        <div className="mb-5">
+          <Controller
+            name="name"
+            control={control}
+            rules={{ required: localize('com_ui_prompt_name_required') }}
+            render={({ field }) => (
+              <div className="relative flex w-full flex-col">
+                <label
+                  htmlFor="prompt-name"
+                  className="mb-1.5 text-xs font-medium uppercase tracking-wider text-text-tertiary"
+                >
+                  {localize('com_ui_prompt_name')} *
+                </label>
+                <Input
+                  {...field}
+                  id="prompt-name"
+                  type="text"
+                  className="h-11 rounded-xl border border-border-light/80 bg-surface-primary/80 px-3 text-base text-text-primary backdrop-blur-sm transition-[border-color,box-shadow] duration-150 placeholder:text-text-tertiary focus:border-primary/55 focus:shadow-[0_0_0_3px_hsl(var(--primary)/0.12)] focus:ring-0 dark:border-border-medium/60 dark:bg-surface-primary-alt/70"
+                  placeholder={localize('com_ui_prompt_name')}
+                  tabIndex={0}
+                  aria-label={localize('com_ui_prompt_name')}
+                  aria-required="true"
+                />
+                <div
+                  className={cn(
+                    'mt-1 text-xs text-destructive',
+                    errors.name ? 'visible h-auto' : 'invisible h-0',
+                  )}
+                >
+                  {errors.name ? errors.name.message : ' '}
+                </div>
+              </div>
+            )}
+          />
+        </div>
+
+        <div className="flex w-full flex-col gap-5">
+          {/* Prompt text card */}
+          <div className="overflow-hidden rounded-2xl border border-border-light/70 bg-surface-primary/60 shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-sm dark:border-border-medium/55 dark:bg-surface-primary-alt/60">
+            <header className="flex items-center justify-between border-b border-border-light/60 bg-surface-tertiary/30 px-4 py-2.5 dark:bg-surface-primary-alt/40">
+              <div className="flex items-center gap-2">
+                <FileText className="size-4 text-primary" aria-hidden="true" />
+                <h2 className="text-sm font-semibold tracking-tight text-text-primary">
                   {localize('com_ui_prompt_text')}*
                 </h2>
               </div>
@@ -171,7 +196,7 @@ const CreatePromptForm = ({
                 <VariablesDropdown fieldName="prompt" />
               </div>
             </header>
-            <div className="min-h-32 rounded-b-xl border border-t-0 border-border-medium p-3 sm:p-4">
+            <div className="min-h-32 px-4 py-4 sm:px-5">
               <Controller
                 name="prompt"
                 control={control}
@@ -180,7 +205,7 @@ const CreatePromptForm = ({
                   <div>
                     <TextareaAutosize
                       {...field}
-                      className="w-full resize-none overflow-y-auto bg-transparent font-mono text-sm leading-relaxed text-text-primary placeholder:text-text-tertiary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring-primary sm:text-base"
+                      className="w-full resize-none overflow-y-auto bg-transparent font-mono text-sm leading-relaxed text-text-primary placeholder:text-text-tertiary focus:outline-none sm:text-base"
                       minRows={4}
                       maxRows={16}
                       tabIndex={0}
@@ -190,7 +215,7 @@ const CreatePromptForm = ({
                     />
                     <div
                       className={cn(
-                        'mt-1 text-sm text-red-500',
+                        'mt-1 text-xs text-destructive',
                         errors.prompt ? 'visible h-auto' : 'invisible h-0',
                       )}
                     >
@@ -201,21 +226,25 @@ const CreatePromptForm = ({
               />
             </div>
           </div>
+
           <PromptVariables promptText={promptText} />
           <Description
             onValueChange={(value) => methods.setValue('oneliner', value)}
             tabIndex={0}
           />
           <Command onValueChange={(value) => methods.setValue('command', value)} tabIndex={0} />
-          <div className="mt-4 flex justify-end">
+
+          <div className="mt-2 flex justify-end border-t border-border-light/60 pt-5">
             <Button
               aria-label={localize('com_ui_create_prompt')}
               className={cn(
-                'w-full sm:w-auto',
-                (!isDirty || isSubmitting || !isValid) && 'opacity-50',
+                'h-10 rounded-xl px-6 font-medium transition-all duration-150',
+                'sm:w-auto',
+                (!isDirty || isSubmitting || !isValid) && 'cursor-not-allowed opacity-50',
               )}
               tabIndex={0}
               type="submit"
+              data-testid="create-prompt-submit-button"
               aria-disabled={!isDirty || isSubmitting || !isValid || undefined}
               onClick={(e: React.MouseEvent) => {
                 if (!isDirty || isSubmitting || !isValid) {

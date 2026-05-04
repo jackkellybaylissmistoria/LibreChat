@@ -68,13 +68,13 @@ const VersionsPanel = React.memo(
     return (
       <div className="flex h-full w-full flex-col overflow-hidden">
         {canEdit && (
-          <div className="shrink-0 px-4 py-2">
+          <div className="shrink-0 px-4 py-3">
             <Button
               variant="submit"
               size="sm"
               aria-label={localize('com_ui_make_production')}
               className={cn(
-                'w-full gap-1.5 transition-all duration-200',
+                'w-full gap-1.5 rounded-xl transition-all duration-200',
                 isProductionVersion &&
                   'border border-green-500/30 bg-green-50 text-green-700 hover:bg-green-100 dark:bg-green-950/30 dark:text-green-400 dark:hover:bg-green-950/50',
               )}
@@ -108,16 +108,16 @@ const VersionsPanel = React.memo(
           {isLoadingPrompts &&
             Array.from({ length: 6 }).map((_, index: number) => (
               <div key={index} className="my-2">
-                <Skeleton className="h-[72px] w-full" />
+                <Skeleton className="h-[72px] w-full rounded-xl" />
               </div>
             ))}
           {!isLoadingPrompts && prompts.length > 0 && (
             <>
-              <div className="mb-2 flex items-center justify-between">
-                <h2 className="text-sm font-medium text-text-secondary">
+              <div className="mb-2.5 flex items-center justify-between border-b border-border-light/60 pb-2">
+                <h2 className="text-xs font-semibold uppercase tracking-wider text-text-tertiary">
                   {localize('com_ui_versions')}
                 </h2>
-                <span className="flex size-5 items-center justify-center rounded-full bg-surface-tertiary text-xs font-medium text-text-secondary">
+                <span className="flex h-5 min-w-[1.25rem] items-center justify-center rounded-full border border-border-light/70 bg-surface-primary px-1.5 text-[11px] font-semibold text-text-secondary dark:border-border-medium/50">
                   {prompts.length}
                 </span>
               </div>
@@ -460,7 +460,7 @@ const PromptForm = ({ promptId: promptIdProp }: { promptId?: string }) => {
             }}
           >
             <div className="flex h-full">
-              <div className="flex-1 overflow-hidden px-4">
+              <div className="flex-1 overflow-hidden px-4 md:px-6 e1-fade-up">
                 {/* Mobile Actions Row */}
                 {!isLoadingGroup && group && (
                   <div className="mb-3 mt-2 flex items-center justify-between gap-2 sm:hidden">
@@ -475,33 +475,38 @@ const PromptForm = ({ promptId: promptIdProp }: { promptId?: string }) => {
                   </div>
                 )}
                 {/* Header: Title + Actions */}
-                <div className="mb-3 mt-2 flex items-center justify-between gap-2">
+                <div className="mb-5 mt-4 flex items-center justify-between gap-2 border-b border-border-light/60 pb-4">
                   {isLoadingGroup ? (
-                    <Skeleton className="h-9 w-48" />
+                    <Skeleton className="h-9 w-48 rounded-xl" />
                   ) : (
                     <>
-                      <div className="flex min-w-0 flex-1 items-center gap-2">
-                        <PromptName
-                          name={groupName}
-                          isLoading={updateGroupMutation.isLoading}
-                          isError={updateGroupMutation.isError}
-                          onSave={(value) => {
-                            if (!canEdit || !group._id) {
-                              return;
-                            }
-                            updateGroupMutation.mutate({
-                              id: group._id,
-                              payload: { name: value },
-                            });
-                          }}
-                        />
+                      <div className="flex min-w-0 flex-1 items-center gap-3">
+                        <div className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border-light/70 bg-surface-tertiary/40 text-primary sm:flex">
+                          <Rocket className="size-5" aria-hidden="true" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <PromptName
+                            name={groupName}
+                            isLoading={updateGroupMutation.isLoading}
+                            isError={updateGroupMutation.isError}
+                            onSave={(value) => {
+                              if (!canEdit || !group._id) {
+                                return;
+                              }
+                              updateGroupMutation.mutate({
+                                id: group._id,
+                                payload: { name: value },
+                              });
+                            }}
+                          />
+                        </div>
                         {editorMode === PromptsEditorMode.ADVANCED && (
                           <Button
                             ref={sidePanelTriggerRef}
                             type="button"
                             variant="outline"
                             size="sm"
-                            className="shrink-0 lg:hidden"
+                            className="shrink-0 rounded-xl border-border-light/80 lg:hidden"
                             onClick={() => setShowSidePanel(true)}
                             aria-label={localize('com_ui_versions')}
                           >
@@ -525,9 +530,9 @@ const PromptForm = ({ promptId: promptIdProp }: { promptId?: string }) => {
 
                 {/* Main Editor Content */}
                 {isLoadingPrompts ? (
-                  <Skeleton className="h-96" aria-live="polite" />
+                  <Skeleton className="h-96 rounded-2xl" aria-live="polite" />
                 ) : (
-                  <div className="mb-2 flex h-full flex-col gap-3">
+                  <div className="mb-2 flex h-full flex-col gap-4">
                     <PromptEditor
                       name="prompt"
                       isEditing={isEditing}
@@ -550,7 +555,7 @@ const PromptForm = ({ promptId: promptIdProp }: { promptId?: string }) => {
 
               {/* Versions Sidebar - Advanced Mode Only */}
               {editorMode === PromptsEditorMode.ADVANCED && (
-                <div className="hidden w-72 shrink-0 border-l border-border-medium lg:block xl:w-80">
+                <div className="hidden w-72 shrink-0 border-l border-border-light/60 bg-surface-tertiary/20 dark:bg-surface-primary-alt/30 lg:block xl:w-80">
                   <VersionsPanel
                     group={group}
                     prompts={prompts}
