@@ -1,0 +1,435 @@
+/*
+ * E1 Modern Theme — applied as overrides on top of LibreChat's existing CSS.
+ *
+ * Aesthetic: Warm bone & ink (light) / Deep obsidian & amber (dark).
+ * Typography: Outfit (heads), Manrope (body), JetBrains Mono (code).
+ *
+ * This file is imported LAST in main.jsx so its rules win the cascade.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ---------- Color Tokens (HSL) ---------- */
+html,
+:root {
+  /* Warm bone & ink */
+  --background: 60 20% 98%;
+  --foreground: 222 47% 11%;
+  --card: 60 20% 98%;
+  --card-foreground: 222 47% 11%;
+  --popover: 60 20% 98%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 33 93% 44%;
+  --primary-foreground: 60 20% 98%;
+  --secondary: 210 30% 96%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 60 10% 94%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 33 93% 44%;
+  --accent-foreground: 60 20% 98%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 60 20% 98%;
+  --border: 60 10% 88%;
+  --input: 60 10% 88%;
+  --ring: 33 93% 44%;
+  --radius: 0.875rem;
+
+  /* Legacy LibreChat tokens — re-mapped to bone/ink */
+  --presentation: hsl(var(--background));
+  --text-primary: hsl(var(--foreground));
+  --text-secondary: hsl(215 16% 32%);
+  --text-secondary-alt: hsl(215 16% 47%);
+  --text-tertiary: hsl(215 12% 55%);
+  --text-warning: #b45309;
+  --text-destructive: #dc2626;
+  --header-primary: hsl(var(--background));
+  --header-hover: hsl(var(--muted));
+  --header-button-hover: hsl(var(--muted));
+  --surface-active: hsl(var(--muted));
+  --surface-active-alt: hsl(60 10% 90%);
+  --surface-hover: hsl(var(--muted));
+  --surface-hover-alt: hsl(60 10% 90%);
+  --surface-primary: hsl(var(--background));
+  --surface-primary-alt: hsl(60 18% 96%);
+  --surface-primary-contrast: hsl(60 12% 92%);
+  --surface-secondary: hsl(60 18% 96%);
+  --surface-secondary-alt: hsl(60 12% 90%);
+  --surface-tertiary: hsl(60 14% 94%);
+  --surface-tertiary-alt: hsl(var(--background));
+  --surface-dialog: hsl(var(--background));
+  --surface-submit: hsl(33 93% 44%);
+  --surface-submit-hover: hsl(33 93% 38%);
+  --surface-destructive: #dc2626;
+  --surface-destructive-hover: #b91c1c;
+  --surface-chat: hsl(var(--background));
+  --border-light: hsl(var(--border));
+  --border-medium-alt: hsl(60 10% 80%);
+  --border-medium: hsl(60 10% 80%);
+  --border-heavy: hsl(60 10% 70%);
+  --border-xheavy: hsl(60 10% 60%);
+  --border-destructive: #dc2626;
+}
+
+/* Dark — deep obsidian + amber */
+html.dark,
+.dark {
+  --background: 0 0% 4%;
+  --foreground: 210 40% 98%;
+  --card: 0 0% 5%;
+  --card-foreground: 210 40% 98%;
+  --popover: 0 0% 7%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 38 92% 50%;
+  --primary-foreground: 0 0% 6%;
+  --secondary: 0 0% 9%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 0 0% 9%;
+  --muted-foreground: 215 16% 65%;
+  --accent: 38 92% 50%;
+  --accent-foreground: 0 0% 6%;
+  --destructive: 0 62% 45%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 0 0% 14%;
+  --input: 0 0% 14%;
+  --ring: 38 92% 50%;
+
+  --presentation: hsl(var(--background));
+  --text-primary: hsl(var(--foreground));
+  --text-secondary: hsl(215 16% 78%);
+  --text-secondary-alt: hsl(215 14% 65%);
+  --text-tertiary: hsl(215 12% 55%);
+  --header-primary: hsl(var(--background));
+  --header-hover: hsl(0 0% 10%);
+  --header-button-hover: hsl(0 0% 10%);
+  --surface-active: hsl(0 0% 12%);
+  --surface-active-alt: hsl(0 0% 14%);
+  --surface-hover: hsl(0 0% 11%);
+  --surface-hover-alt: hsl(0 0% 14%);
+  --surface-primary: hsl(var(--background));
+  --surface-primary-alt: hsl(0 0% 6%);
+  --surface-primary-contrast: hsl(0 0% 8%);
+  --surface-secondary: hsl(0 0% 6%);
+  --surface-secondary-alt: hsl(0 0% 9%);
+  --surface-tertiary: hsl(0 0% 8%);
+  --surface-tertiary-alt: hsl(0 0% 6%);
+  --surface-dialog: hsl(0 0% 5%);
+  --surface-submit: hsl(38 92% 50%);
+  --surface-submit-hover: hsl(38 92% 44%);
+  --surface-destructive: #b91c1c;
+  --surface-destructive-hover: #991b1b;
+  --surface-chat: hsl(var(--background));
+  --border-light: hsl(var(--border));
+  --border-medium-alt: hsl(0 0% 18%);
+  --border-medium: hsl(0 0% 18%);
+  --border-heavy: hsl(0 0% 24%);
+  --border-xheavy: hsl(0 0% 30%);
+}
+
+/* ---------- Typography ---------- */
+html,
+body {
+  font-family:
+    'Manrope',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.005em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-display {
+  font-family:
+    'Outfit',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+code,
+pre,
+kbd,
+samp,
+.font-mono {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-feature-settings: 'liga', 'calt';
+}
+
+/* ---------- Composer (chat input) — floating, rounded, glassy ---------- */
+form .relative.flex.h-full.flex-1.items-stretch,
+form .relative.flex.h-full.max-w-full.flex-1.flex-col {
+  /* leave structure */
+}
+
+/* The composer container LibreChat builds with these classes */
+form > div.relative.flex.w-full {
+  /* keep default; refinements applied to inner shell below */
+}
+
+.composer-container,
+form .border-token-border-medium.rounded-3xl,
+form [class*='rounded-3xl'][class*='border'] {
+  border-radius: 1.5rem !important;
+  border-color: hsl(var(--border)) !important;
+  background: hsl(var(--background) / 0.85) !important;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow:
+    0 1px 0 0 hsl(var(--border) / 0.6) inset,
+    0 12px 28px -10px rgb(0 0 0 / 0.08),
+    0 4px 10px -4px rgb(0 0 0 / 0.04);
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    background 150ms ease;
+}
+
+.dark .composer-container,
+.dark form .border-token-border-medium.rounded-3xl,
+.dark form [class*='rounded-3xl'][class*='border'] {
+  background: hsl(0 0% 7% / 0.78) !important;
+  box-shadow:
+    0 1px 0 0 hsl(0 0% 100% / 0.04) inset,
+    0 18px 40px -16px rgb(0 0 0 / 0.7),
+    0 6px 14px -6px rgb(0 0 0 / 0.4);
+}
+
+form [class*='rounded-3xl']:focus-within {
+  border-color: hsl(var(--primary) / 0.55) !important;
+  box-shadow:
+    0 1px 0 0 hsl(var(--border) / 0.6) inset,
+    0 0 0 3px hsl(var(--primary) / 0.12),
+    0 12px 28px -10px rgb(0 0 0 / 0.08);
+}
+
+/* Send-button: ChatGPT-style filled circle */
+form button[aria-label*='send' i],
+form button[aria-label*='Send' i],
+form button[data-testid*='send-button' i],
+button[aria-label*='Send message' i] {
+  background-color: hsl(var(--foreground)) !important;
+  color: hsl(var(--background)) !important;
+  border-radius: 9999px !important;
+  transition:
+    transform 150ms ease,
+    opacity 150ms ease,
+    background-color 150ms ease !important;
+}
+form button[aria-label*='send' i]:hover:not(:disabled) {
+  opacity: 0.85;
+  transform: translateY(-0.5px);
+}
+form button[aria-label*='send' i]:disabled {
+  opacity: 0.35;
+}
+
+/* ---------- Sidebar (left nav) ---------- */
+nav[aria-label='Chat history'],
+.bg-surface-primary-alt,
+nav.bg-surface-primary {
+  background-color: hsl(var(--background)) !important;
+  border-right: 1px solid hsl(var(--border) / 0.7);
+}
+
+/* Sidebar items: airy, transparent default, subtle hover */
+nav [class*='rounded-lg']:hover,
+nav [class*='rounded-md']:hover {
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+/* "New chat" button refinement */
+nav button:has(svg[aria-label*='new' i]),
+button[aria-label*='New chat' i],
+button[data-testid='nav-new-chat-button'] {
+  border-radius: 0.75rem !important;
+}
+
+/* ---------- Messages: user card + assistant edge-to-edge ---------- */
+/* User message wrapper (LibreChat marks user role on a parent div).
+   We target generic message bubbles by their max-w + rounded utility. */
+[data-message-author-role='user'] .markdown,
+[data-message-author-role='user'] [class*='rounded-3xl'] {
+  background-color: hsl(var(--muted) / 0.5) !important;
+  border: 1px solid hsl(var(--border) / 0.7) !important;
+  border-radius: 1.25rem !important;
+  padding: 1rem 1.125rem !important;
+  box-shadow: none !important;
+}
+.dark [data-message-author-role='user'] [class*='rounded-3xl'] {
+  background-color: hsl(0 0% 8% / 0.8) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+/* Assistant: keep transparent, plain text */
+[data-message-author-role='assistant'] [class*='rounded-3xl'] {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Code blocks: warmer, softer */
+.markdown pre,
+pre[class*='language-'] {
+  background-color: hsl(var(--muted) / 0.55) !important;
+  border: 1px solid hsl(var(--border) / 0.5) !important;
+  border-radius: 0.875rem !important;
+  font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+}
+.dark .markdown pre,
+.dark pre[class*='language-'] {
+  background-color: hsl(0 0% 7% / 0.85) !important;
+}
+
+/* Inline code: bone tint + amber shimmer */
+.markdown :not(pre) > code {
+  background-color: hsl(var(--muted)) !important;
+  color: hsl(33 93% 36%) !important;
+  border-radius: 6px !important;
+  padding: 0.1em 0.4em !important;
+  font-size: 0.9em !important;
+  border: 1px solid hsl(var(--border) / 0.5) !important;
+}
+.dark .markdown :not(pre) > code {
+  color: hsl(38 92% 60%) !important;
+  background-color: hsl(0 0% 9%) !important;
+}
+
+/* ---------- Welcome screen / empty state ---------- */
+.landing-title,
+[class*='LandingPage'] h1,
+main h1.text-4xl,
+main h1.text-5xl {
+  font-family: 'Outfit', system-ui, sans-serif !important;
+  font-weight: 300 !important;
+  letter-spacing: -0.035em !important;
+}
+
+/* Suggested prompt cards — softer hover */
+button[class*='rounded-2xl'][class*='border'],
+[role='button'][class*='rounded-2xl'][class*='border'] {
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+button[class*='rounded-2xl'][class*='border']:hover {
+  border-color: hsl(var(--primary) / 0.4) !important;
+  background-color: hsl(var(--muted) / 0.4) !important;
+  transform: translateY(-1px);
+}
+
+/* ---------- Buttons: pillify primary actions ---------- */
+button.btn-primary,
+button[class*='bg-surface-submit'] {
+  border-radius: 0.75rem !important;
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  transition: opacity 150ms ease, background-color 150ms ease;
+}
+button.btn-primary:hover,
+button[class*='bg-surface-submit']:hover {
+  opacity: 0.92;
+}
+
+/* ---------- Scrollbar ---------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--border));
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted-foreground) / 0.4);
+  background-clip: content-box;
+}
+
+/* ---------- Selection ---------- */
+::selection {
+  background: hsl(var(--primary) / 0.25);
+  color: hsl(var(--foreground));
+}
+
+/* ---------- Login / Auth screen ---------- */
+[data-testid='login-form'],
+form[aria-label*='login' i] {
+  font-family: 'Manrope', system-ui, sans-serif;
+}
+
+/* Make the welcome heading use Outfit display + tighter tracking */
+.text-3xl,
+.text-4xl,
+.text-5xl {
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Performance: faster default transitions ---------- */
+:root {
+  --tw-transition-duration: 150ms;
+}
+
+/* Reduce heavy default radii on dialogs, inputs */
+.rounded-md {
+  border-radius: 0.625rem !important;
+}
+
+/* Inputs: cleaner, taller, with subtle focus */
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='url'],
+input[type='search'],
+textarea,
+select {
+  border-radius: 0.75rem;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='password']:focus,
+input[type='url']:focus,
+textarea:focus {
+  border-color: hsl(var(--primary) / 0.55) !important;
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.12) !important;
+  outline: none !important;
+}
+
+/* ---------- Subtle entrance animation utility ---------- */
+@keyframes e1-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.e1-fade-up {
+  animation: e1-fade-up 200ms ease-out both;
+}
