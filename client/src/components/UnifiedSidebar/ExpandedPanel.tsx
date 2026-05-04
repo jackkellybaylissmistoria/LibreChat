@@ -48,10 +48,17 @@ const NewChatButton = memo(function NewChatButton({
           href="/c/new"
           data-testid="new-chat-button"
           aria-label={localize('com_ui_new_chat')}
-          className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-surface-hover"
+          className={cn(
+            'group relative flex h-10 w-10 items-center justify-center rounded-xl',
+            'border border-border-light/70 bg-surface-primary',
+            'shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-150 ease-out',
+            'hover:-translate-y-0.5 hover:border-primary/40 hover:bg-surface-tertiary/60',
+            'hover:shadow-[0_6px_18px_-8px_rgba(0,0,0,0.12)]',
+            'dark:border-border-medium/60 dark:bg-surface-primary-alt',
+          )}
           onClick={handleClick}
         >
-          <SquarePen className="h-5 w-5 text-text-primary" />
+          <SquarePen className="h-[18px] w-[18px] text-text-primary transition-transform duration-150 group-hover:scale-105" />
         </a>
       }
     />
@@ -106,12 +113,20 @@ const NavIconButton = memo(function NavIconButton({
           aria-label={localize(link.title)}
           aria-pressed={isActive}
           className={cn(
-            'h-9 w-9 rounded-lg',
-            isActive ? 'bg-surface-active-alt text-text-primary' : 'text-text-secondary',
+            'group relative h-10 w-10 rounded-xl transition-all duration-150 ease-out',
+            isActive
+              ? 'bg-surface-tertiary text-text-primary shadow-[0_1px_2px_rgba(0,0,0,0.04)] before:absolute before:left-0 before:top-1/2 before:h-5 before:w-[3px] before:-translate-x-3 before:-translate-y-1/2 before:rounded-r-full before:bg-primary before:opacity-100 before:content-[""]'
+              : 'text-text-tertiary hover:bg-surface-tertiary/60 hover:text-text-primary',
           )}
           onClick={handleClick}
         >
-          <link.icon className="h-5 w-5" aria-hidden="true" />
+          <link.icon
+            className={cn(
+              'h-[18px] w-[18px] transition-transform duration-150',
+              'group-hover:scale-105',
+            )}
+            aria-hidden="true"
+          />
         </Button>
       }
     />
@@ -137,7 +152,12 @@ function ExpandedPanel({
   const toggleClick = expanded ? onCollapse : onExpand;
 
   return (
-    <div className="flex h-full flex-shrink-0 flex-col gap-2 border-r border-border-light bg-surface-primary-alt px-2 py-2">
+    <div className="relative flex h-full flex-shrink-0 flex-col gap-1.5 border-r border-border-light/60 bg-surface-primary/85 px-3 py-3 backdrop-blur-md dark:border-border-medium/40 dark:bg-surface-primary/70">
+      {/* Subtle gradient at top */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-primary/[0.04] to-transparent dark:from-primary/[0.05]"
+      />
       <TooltipAnchor
         side="right"
         description={localize(toggleLabel)}
@@ -149,16 +169,19 @@ function ExpandedPanel({
             variant="ghost"
             aria-label={localize(toggleLabel)}
             aria-expanded={expanded}
-            className="h-9 w-9 rounded-lg"
+            className="group h-10 w-10 rounded-xl text-text-tertiary transition-all duration-150 hover:bg-surface-tertiary/60 hover:text-text-primary"
             onClick={toggleClick}
           >
-            <Sidebar aria-hidden="true" className="h-5 w-5 text-text-primary" />
+            <Sidebar
+              aria-hidden="true"
+              className="h-[18px] w-[18px] transition-transform duration-150 group-hover:scale-105"
+            />
           </Button>
         }
       />
       <NewChatButton setActive={setActive} />
-      <div className="mx-2 border-b border-border-light" />
-      <div className="flex flex-col gap-1 overflow-y-auto">
+      <div className="my-1 h-px w-8 self-center bg-gradient-to-r from-transparent via-border-medium to-transparent" />
+      <div className="flex flex-col gap-1.5 overflow-y-auto">
         {links.map((link) => (
           <NavIconButton
             key={link.id}
@@ -172,8 +195,9 @@ function ExpandedPanel({
         ))}
       </div>
 
-      <div className="mt-auto">
-        <Suspense fallback={<Skeleton className="h-9 w-9 rounded-lg" />}>
+      <div className="mt-auto pt-2">
+        <div className="mb-2 h-px w-8 self-center bg-gradient-to-r from-transparent via-border-medium to-transparent" />
+        <Suspense fallback={<Skeleton className="h-10 w-10 rounded-xl" />}>
           <AccountSettings collapsed />
         </Suspense>
       </div>

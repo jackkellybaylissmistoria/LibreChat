@@ -138,37 +138,73 @@ const AgentDetailContent: React.FC<AgentDetailContentProps> = ({ agent }) => {
   };
 
   return (
-    <OGDialogContent className="max-h-[90vh] w-11/12 max-w-lg overflow-y-auto">
-      {/* Agent avatar */}
-      <div className="mt-6 flex justify-center">{renderAgentAvatar(agent, { size: 'xl' })}</div>
+    <OGDialogContent className="overflow-hidden border-border-light/70 p-0 sm:max-w-lg">
+      {/* Cover band with soft amber halo */}
+      <div className="relative h-28 overflow-hidden border-b border-border-light/60 bg-gradient-to-br from-surface-tertiary/40 via-surface-primary to-surface-primary dark:from-surface-primary-alt dark:via-surface-primary dark:to-surface-primary">
+        <span
+          aria-hidden
+          className="absolute -top-10 left-1/2 h-40 w-72 -translate-x-1/2 rounded-full bg-primary/15 blur-3xl dark:bg-primary/20"
+        />
+        {/* dot pattern */}
+        <span
+          aria-hidden
+          className="absolute inset-0 opacity-[0.18] dark:opacity-[0.12]"
+          style={{
+            backgroundImage:
+              'radial-gradient(currentColor 0.5px, transparent 0.5px)',
+            backgroundSize: '14px 14px',
+            color: 'hsl(var(--muted-foreground))',
+          }}
+        />
+      </div>
 
-      {/* Agent name */}
-      <div className="mt-3 text-center">
-        <h2 className="text-2xl font-bold text-text-primary">
+      {/* Avatar floats over the cover */}
+      <div className="-mt-12 flex flex-col items-center px-6">
+        <div className="relative">
+          <div className="overflow-hidden rounded-2xl bg-surface-primary p-1 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.18)] ring-1 ring-border-light/70 dark:ring-border-medium/60">
+            {renderAgentAvatar(agent, { size: 'xl' })}
+          </div>
+          <span
+            aria-hidden
+            className="absolute -inset-2 -z-10 rounded-3xl bg-primary/15 blur-2xl"
+          />
+        </div>
+
+        <h2
+          className="font-display mt-4 text-center text-2xl font-medium tracking-[-0.025em] text-text-primary"
+          data-testid="agent-detail-name"
+        >
           {agent?.name || localize('com_agents_loading')}
         </h2>
+
+        {/* Contact info */}
+        {agent?.support_contact && formatContact() && (
+          <div className="mt-1.5 inline-flex items-center gap-1.5 text-xs text-text-tertiary">
+            <span className="h-1 w-1 rounded-full bg-primary/70" aria-hidden />
+            <span>
+              {localize('com_agents_contact')}: {formatContact()}
+            </span>
+          </div>
+        )}
+
+        {/* Description */}
+        {agent?.description && (
+          <p className="mt-5 max-h-48 overflow-y-auto whitespace-pre-wrap rounded-xl border border-border-light/60 bg-surface-tertiary/30 px-4 py-3 text-center text-sm leading-relaxed text-text-secondary dark:border-border-medium/50 dark:bg-surface-primary-alt/60">
+            {agent.description}
+          </p>
+        )}
       </div>
 
-      {/* Contact info */}
-      {agent?.support_contact && formatContact() && (
-        <div className="mt-1 text-center text-sm text-text-secondary">
-          {localize('com_agents_contact')}: {formatContact()}
-        </div>
-      )}
-
-      {/* Agent description */}
-      <div className="mt-4 whitespace-pre-wrap px-6 text-center text-base text-text-primary">
-        {agent?.description}
-      </div>
-
-      {/* Action button */}
-      <div className="mb-4 mt-6 flex justify-center gap-2">
+      {/* Action footer */}
+      <div className="mt-6 flex items-center gap-2 border-t border-border-light/60 bg-surface-tertiary/20 px-5 py-4 dark:bg-surface-primary-alt/40">
         <Button
           variant="outline"
           size="icon"
           onClick={handleFavoriteClick}
           title={isFavorite ? localize('com_ui_unpin') : localize('com_ui_pin')}
           aria-label={isFavorite ? localize('com_ui_unpin') : localize('com_ui_pin')}
+          data-testid="agent-detail-pin-button"
+          className="h-10 w-10 rounded-xl border-border-light/80 bg-surface-primary text-text-secondary transition-colors duration-150 hover:border-primary/40 hover:text-primary"
         >
           {isFavorite ? <PinOff className="h-4 w-4" /> : <Pin className="h-4 w-4" />}
         </Button>
@@ -178,14 +214,17 @@ const AgentDetailContent: React.FC<AgentDetailContentProps> = ({ agent }) => {
           onClick={handleCopyLink}
           title={localize('com_agents_copy_link')}
           aria-label={localize('com_agents_copy_link')}
+          data-testid="agent-detail-copy-link-button"
+          className="h-10 w-10 rounded-xl border-border-light/80 bg-surface-primary text-text-secondary transition-colors duration-150 hover:border-primary/40 hover:text-primary"
         >
           <Link className="h-4 w-4" aria-hidden="true" />
         </Button>
         <Button
           variant="submit"
-          className="w-full max-w-xs"
+          className="ml-auto h-10 flex-1 rounded-xl px-6 font-medium"
           onClick={handleStartChat}
           disabled={!agent}
+          data-testid="agent-detail-start-chat-button"
         >
           {localize('com_agents_start_chat')}
         </Button>

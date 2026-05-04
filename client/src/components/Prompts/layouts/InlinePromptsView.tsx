@@ -37,12 +37,17 @@ export default function InlinePromptsView() {
   }
 
   return (
-    <div className="flex h-full w-full flex-col overflow-y-auto bg-presentation">
-      {isNew ? (
-        <CreatePromptForm onSuccess={handleCreateSuccess} />
-      ) : (
-        <PromptForm promptId={promptId} />
-      )}
+    <div
+      className="flex h-full w-full flex-col overflow-y-auto bg-presentation"
+      data-testid="inline-prompts-view"
+    >
+      <div className="mx-auto w-full max-w-3xl flex-1 e1-fade-up">
+        {isNew ? (
+          <CreatePromptForm onSuccess={handleCreateSuccess} />
+        ) : (
+          <PromptForm promptId={promptId} />
+        )}
+      </div>
     </div>
   );
 }
