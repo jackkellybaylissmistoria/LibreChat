@@ -88,6 +88,10 @@ router.post(
       }
 
       let metadata = await encryptMetadata(removeNullishValues(_metadata, true));
+      // Strip client-side "_set" markers so they aren't persisted on the action document
+      delete metadata.api_key_set;
+      delete metadata.oauth_client_id_set;
+      delete metadata.oauth_client_secret_set;
       const appConfig = req.config;
 
       // SECURITY: Validate the OpenAPI spec and extract the server URL
@@ -207,6 +211,8 @@ router.post(
       const sensitiveFields = ['api_key', 'oauth_client_id', 'oauth_client_secret'];
       for (let field of sensitiveFields) {
         if (updatedAction.metadata[field]) {
+          // Track that the field is set (so the frontend can preserve it on edit)
+          updatedAction.metadata[`${field}_set`] = true;
           delete updatedAction.metadata[field];
         }
       }

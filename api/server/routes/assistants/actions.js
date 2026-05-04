@@ -34,6 +34,10 @@ router.post('/:assistant_id', async (req, res) => {
     }
 
     let metadata = await encryptMetadata(removeNullishValues(_metadata, true));
+    // Strip client-side "_set" markers so they aren't persisted on the action document
+    delete metadata.api_key_set;
+    delete metadata.oauth_client_id_set;
+    delete metadata.oauth_client_secret_set;
     const isDomainAllowed = await isActionDomainAllowed(
       metadata.domain,
       appConfig?.actions?.allowedDomains,
@@ -136,6 +140,8 @@ router.post('/:assistant_id', async (req, res) => {
     const sensitiveFields = ['api_key', 'oauth_client_id', 'oauth_client_secret'];
     for (let field of sensitiveFields) {
       if (updatedAction.metadata[field]) {
+        // Mark that the field is set so the frontend can preserve it on edit
+        updatedAction.metadata[`${field}_set`] = true;
         delete updatedAction.metadata[field];
       }
     }

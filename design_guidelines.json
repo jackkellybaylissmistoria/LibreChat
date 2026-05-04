@@ -1,0 +1,156 @@
+{
+  "theme": "Dark and Light",
+  "archetype": "Archetype 4 (Swiss & High-Contrast) + Archetype 1 (Organic & Earthy)",
+  "design_philosophy": "A sophisticated, high-performance 'Document Chat' interface. Eliminates the generic 'SaaS blue' and 'AI purple' in favor of warm bone/ink (Light) and deep obsidian/amber (Dark). Focuses on minimal perceived lag through optimistic UI, swift 150ms transitions, and reduced visual noise (no heavy bubbles, no harsh borders).",
+  "typography": {
+    "fonts": {
+      "heading": "Outfit, system-ui, sans-serif",
+      "body": "Manrope, system-ui, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl font-outfit font-light tracking-tighter",
+      "h2": "text-2xl sm:text-3xl font-outfit font-normal tracking-tight",
+      "body": "text-base font-manrope leading-relaxed",
+      "code": "text-sm font-mono tracking-tight",
+      "labels": "text-xs font-manrope font-semibold tracking-[0.05em] uppercase"
+    }
+  },
+  "colors": {
+    "light": {
+      "background": "60 20% 98%",
+      "foreground": "222 47% 11%",
+      "card": "60 20% 98%",
+      "card-foreground": "222 47% 11%",
+      "popover": "60 20% 98%",
+      "popover-foreground": "222 47% 11%",
+      "primary": "33 93% 44%",
+      "primary-foreground": "60 20% 98%",
+      "secondary": "210 40% 96%",
+      "secondary-foreground": "222 47% 11%",
+      "muted": "60 10% 94%",
+      "muted-foreground": "215 16% 47%",
+      "accent": "33 93% 44%",
+      "accent-foreground": "60 20% 98%",
+      "border": "60 10% 88%",
+      "input": "60 10% 88%",
+      "ring": "33 93% 44%"
+    },
+    "dark": {
+      "background": "0 0% 3%",
+      "foreground": "210 40% 98%",
+      "card": "0 0% 3%",
+      "card-foreground": "210 40% 98%",
+      "popover": "0 0% 6%",
+      "popover-foreground": "210 40% 98%",
+      "primary": "38 92% 50%",
+      "primary-foreground": "0 0% 3%",
+      "secondary": "0 0% 9%",
+      "secondary-foreground": "210 40% 98%",
+      "muted": "0 0% 9%",
+      "muted-foreground": "215 20% 65%",
+      "accent": "38 92% 50%",
+      "accent-foreground": "0 0% 3%",
+      "border": "0 0% 12%",
+      "input": "0 0% 12%",
+      "ring": "38 92% 50%"
+    }
+  },
+  "layout_and_spacing": {
+    "global": "Generous spacing. Use p-6, p-8 for containers.",
+    "sidebar": "w-64 or w-72. No heavy background fills. Use border-r border-border/40 to separate from main content. Group items with pt-6 pb-2 text-xs uppercase tracking-wider text-muted-foreground.",
+    "chat_area": "Flex-1, max-w-3xl mx-auto px-4 md:px-8 w-full. Pad the bottom generously (pb-40) to account for floating composer.",
+    "bento_grid": "For the welcome screen: grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto."
+  },
+  "component_strategies": {
+    "sidebar_navigation": {
+      "look": "Minimalist list. Items have rounded-lg. Default state is transparent background.",
+      "interaction": "hover:bg-muted/50 text-foreground/80 hover:text-foreground transition-colors duration-150."
+    },
+    "new_chat_button": {
+      "look": "Full width at top of sidebar. Not primary color to reduce noise. bg-secondary text-secondary-foreground border border-border/50 rounded-xl h-10 flex items-center justify-start px-4 shadow-sm.",
+      "interaction": "hover:bg-muted hover:border-border transition-all"
+    },
+    "message_user": {
+      "look": "Document-style, no heavy bubbles. bg-muted/20 border border-border/40 rounded-2xl p-5 w-full max-w-2xl ml-auto.",
+      "typography": "text-base text-foreground/90 font-manrope."
+    },
+    "message_assistant": {
+      "look": "Edge-to-edge plain text format, transparent background. Avatar on left. Content flows naturally on right. No borders.",
+      "typography": "text-base text-foreground leading-relaxed font-manrope. Code blocks use bg-muted/30 border border-border/30 rounded-xl."
+    },
+    "composer": {
+      "look": "Floating centered at bottom. max-w-3xl w-[calc(100%-2rem)]. bg-background/80 backdrop-blur-xl border border-border/60 rounded-3xl p-3 shadow-lg shadow-black/5 dark:shadow-black/40.",
+      "interaction": "focus-within:border-primary/40 focus-within:ring-1 focus-within:ring-primary/20 transition-all duration-200.",
+      "internals": "Textarea auto-grows up to max-h-48. Action buttons (mic, attach) grouped on left bottom, Submit button on right bottom (bg-foreground text-background rounded-full p-2 hover:opacity-80)."
+    },
+    "welcome_screen": {
+      "look": "Centered vertically and horizontally.",
+      "hero_text": "text-4xl text-center font-outfit text-foreground tracking-tighter mb-8",
+      "suggestion_cards": "bg-background border border-border/50 rounded-2xl p-5 hover:border-primary/40 hover:bg-muted/20 transition-colors cursor-pointer group shadow-sm."
+    }
+  },
+  "motion_and_interactions": {
+    "timing": "Extremely fast, maximum 150ms to ensure 'minimal lag' feel.",
+    "transitions": "transition-all duration-150 ease-out",
+    "loading_states": "Avoid slow skeleton pulses. Use swift fade-ins (`animate-in fade-in duration-200`) and a static, soft `bg-muted` block.",
+    "typing_indicator": "Subtle flashing block cursor `w-2 h-4 bg-primary animate-pulse` appended to streaming text. No 'typing bubbles'."
+  },
+  "css_variable_overrides": {
+    "instructions": "Inject these into /app/frontend/src/index.css or Tailwind config.",
+    ":root": {
+      "--background": "60 20% 98%",
+      "--foreground": "222 47% 11%",
+      "--muted": "60 10% 94%",
+      "--muted-foreground": "215 16% 47%",
+      "--popover": "60 20% 98%",
+      "--popover-foreground": "222 47% 11%",
+      "--card": "60 20% 98%",
+      "--card-foreground": "222 47% 11%",
+      "--border": "60 10% 88%",
+      "--input": "60 10% 88%",
+      "--primary": "33 93% 44%",
+      "--primary-foreground": "60 20% 98%",
+      "--secondary": "210 40% 96%",
+      "--secondary-foreground": "222 47% 11%",
+      "--accent": "33 93% 44%",
+      "--accent-foreground": "60 20% 98%",
+      "--destructive": "0 84% 60%",
+      "--destructive-foreground": "60 20% 98%",
+      "--ring": "33 93% 44%",
+      "--radius": "0.75rem"
+    },
+    ".dark": {
+      "--background": "0 0% 3%",
+      "--foreground": "210 40% 98%",
+      "--muted": "0 0% 9%",
+      "--muted-foreground": "215 20% 65%",
+      "--popover": "0 0% 6%",
+      "--popover-foreground": "210 40% 98%",
+      "--card": "0 0% 3%",
+      "--card-foreground": "210 40% 98%",
+      "--border": "0 0% 12%",
+      "--input": "0 0% 12%",
+      "--primary": "38 92% 50%",
+      "--primary-foreground": "0 0% 3%",
+      "--secondary": "0 0% 9%",
+      "--secondary-foreground": "210 40% 98%",
+      "--accent": "38 92% 50%",
+      "--accent-foreground": "0 0% 3%",
+      "--destructive": "0 62% 30%",
+      "--destructive-foreground": "210 40% 98%",
+      "--ring": "38 92% 50%"
+    }
+  },
+  "testing_attributes": {
+    "rule": "All interactive elements must include a data-testid attribute in kebab-case based on their role.",
+    "examples": ["data-testid='sidebar-new-chat-button'", "data-testid='composer-textarea'", "data-testid='composer-submit-button'", "data-testid='message-bubble-user'"]
+  },
+  "bug_fixes": {
+    "agent_tokens_not_saving": {
+      "issue": "Customer defined agent API tokens are not saved.",
+      "instructions_for_main_agent": "Inspect the backend LibreChat routes responsible for Agent/Endpoint creation and updating (e.g., in `/api/server/routes/agents/` or `/api/server/models/Agent.js`). Verify that the `api_key` or `agent_token` parameter is correctly extracted from the request body, not stripped out by Zod/Joi schema validation, properly encrypted before saving to the database (if applicable), and successfully persisted. Also ensure the frontend is sending the token payload under the correct key name expected by the backend."
+    }
+  },
+  "instructions_to_main_agent": "1. Import Outfit, Manrope, and JetBrains Mono from Google Fonts in index.html. 2. Apply the CSS variable overrides to index.css to immediately transform the palette. 3. Update the Tailwind config to map the font families. 4. Refactor the Sidebar component to remove heavy backgrounds and apply the new clean look. 5. Refactor the Message bubbles: User messages get a subtle border card, Assistant messages become edge-to-edge transparent. 6. Refactor the Composer to be a floating, rounded-3xl container with backdrop-blur. 7. Address the backend Agent API Token bug as described in the bug_fixes section."
+}

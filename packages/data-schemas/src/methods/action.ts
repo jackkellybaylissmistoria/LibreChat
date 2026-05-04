@@ -40,6 +40,8 @@ export function createActionMethods(mongoose: typeof import('mongoose')) {
 
         for (const field of sensitiveFields) {
           if (metadata[field]) {
+            // Mark that a sensitive value exists so the client can preserve it on edit.
+            metadata[`${field}_set`] = true;
             delete metadata[field];
           }
         }

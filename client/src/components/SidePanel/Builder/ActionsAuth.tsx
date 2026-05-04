@@ -168,11 +168,13 @@ const ApiKey = () => {
   const { register, watch, setValue } = useFormContext();
   const authorization_type = watch('authorization_type');
   const type = watch('type');
+  const api_key_set = watch('api_key_set');
+  const api_key = watch('api_key');
   return (
     <>
       <label className="mb-1 block text-sm font-medium">{localize('com_ui_api_key')}</label>
       <input
-        placeholder="<HIDDEN>"
+        placeholder={api_key_set ? '•••••••••• (saved — leave blank to keep)' : '<HIDDEN>'}
         type="new-password"
         autoComplete="new-password"
         className={cn(
@@ -180,7 +182,10 @@ const ApiKey = () => {
           'border-border-medium bg-surface-primary outline-none',
           'focus:ring-2 focus:ring-ring',
         )}
-        {...register('api_key', { required: type === AuthTypeEnum.ServiceHttp })}
+        {...register('api_key', {
+          // Only require api_key if no key has been previously saved on the server
+          required: type === AuthTypeEnum.ServiceHttp && !api_key_set,
+        })}
       />
       <label className="mb-1 block text-sm font-medium">{localize('com_ui_auth_type')}</label>
       <RadioGroup.Root
@@ -284,6 +289,8 @@ const OAuth = () => {
   const { register, watch, setValue } = useFormContext();
   const token_exchange_method = watch('token_exchange_method');
   const type = watch('type');
+  const oauth_client_id_set = watch('oauth_client_id_set');
+  const oauth_client_secret_set = watch('oauth_client_secret_set');
 
   const inputClasses = cn(
     'mb-2 h-9 w-full resize-none overflow-y-auto rounded-lg border px-3 py-2 text-sm',
@@ -295,7 +302,7 @@ const OAuth = () => {
     <>
       <label className="mb-1 block text-sm font-medium">{localize('com_ui_client_id')}</label>
       <input
-        placeholder="<HIDDEN>"
+        placeholder={oauth_client_id_set ? '•••••••••• (saved — leave blank to keep)' : '<HIDDEN>'}
         type="password"
         autoComplete="new-password"
         className={inputClasses}
@@ -303,7 +310,9 @@ const OAuth = () => {
       />
       <label className="mb-1 block text-sm font-medium">{localize('com_ui_client_secret')}</label>
       <input
-        placeholder="<HIDDEN>"
+        placeholder={
+          oauth_client_secret_set ? '•••••••••• (saved — leave blank to keep)' : '<HIDDEN>'
+        }
         type="password"
         autoComplete="new-password"
         className={inputClasses}

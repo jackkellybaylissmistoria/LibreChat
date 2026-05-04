@@ -137,18 +137,30 @@ export default function ActionsInput({
       delete obj.oauth_client_secret;
     };
 
+    // Strip server-only "_set" markers so they don't get persisted to the DB
+    delete (metadata as ActionMetadata).api_key_set;
+    delete (metadata as ActionMetadata).oauth_client_id_set;
+    delete (metadata as ActionMetadata).oauth_client_secret_set;
+
     if (saved_auth_fields && type === AuthTypeEnum.ServiceHttp) {
-      metadata = {
+      const next: ActionMetadata = {
         ...metadata,
-        api_key: authFormData.api_key,
         auth: {
           type,
           authorization_type: authFormData.authorization_type,
           custom_auth_header: authFormData.custom_auth_header,
         },
       };
+      // Only include api_key if user actually entered one. Empty string +
+      // an existing saved key means "keep the previously saved value".
+      if (authFormData.api_key && authFormData.api_key.length > 0) {
+        next.api_key = authFormData.api_key;
+      } else {
+        delete next.api_key;
+      }
+      metadata = next;
     } else if (saved_auth_fields && type === AuthTypeEnum.OAuth) {
-      metadata = {
+      const next: ActionMetadata = {
         ...metadata,
         auth: {
           type,
@@ -157,9 +169,18 @@ export default function ActionsInput({
           scope: authFormData.scope,
           token_exchange_method: authFormData.token_exchange_method,
         },
-        oauth_client_id: authFormData.oauth_client_id,
-        oauth_client_secret: authFormData.oauth_client_secret,
       };
+      if (authFormData.oauth_client_id && authFormData.oauth_client_id.length > 0) {
+        next.oauth_client_id = authFormData.oauth_client_id;
+      } else {
+        delete next.oauth_client_id;
+      }
+      if (authFormData.oauth_client_secret && authFormData.oauth_client_secret.length > 0) {
+        next.oauth_client_secret = authFormData.oauth_client_secret;
+      } else {
+        delete next.oauth_client_secret;
+      }
+      metadata = next;
     } else if (saved_auth_fields) {
       removeSensitiveFields(metadata);
       metadata.auth = {

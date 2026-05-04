@@ -384,6 +384,12 @@ export type ActionMetadata = {
   raw_spec?: string;
   oauth_client_id?: string;
   oauth_client_secret?: string;
+  /** Indicates whether a saved api_key exists on the server (used to preserve key on edit). */
+  api_key_set?: boolean;
+  /** Indicates whether a saved oauth_client_id exists on the server. */
+  oauth_client_id_set?: boolean;
+  /** Indicates whether a saved oauth_client_secret exists on the server. */
+  oauth_client_secret_set?: boolean;
 };
 
 export type ActionAuth = {

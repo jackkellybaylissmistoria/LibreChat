@@ -158,11 +158,14 @@ export type ActionAuthForm = {
   saved_auth_fields: boolean;
   /* API key */
   api_key: string; // not nested
+  api_key_set?: boolean; // saved-on-server marker (key is hidden)
   authorization_type: t.AuthorizationTypeEnum;
   custom_auth_header: string;
   /* OAuth */
   oauth_client_id: string; // not nested
+  oauth_client_id_set?: boolean;
   oauth_client_secret: string; // not nested
+  oauth_client_secret_set?: boolean;
   authorization_url: string;
   client_url: string;
   scope: string;

@@ -9,6 +9,7 @@ export interface IAction extends Document {
   assistant_id?: string;
   metadata: {
     api_key?: string;
+    api_key_set?: boolean;
     auth: {
       authorization_type?: string;
       custom_auth_header?: string;
@@ -23,7 +24,9 @@ export interface IAction extends Document {
     privacy_policy_url?: string;
     raw_spec?: string;
     oauth_client_id?: string;
+    oauth_client_id_set?: boolean;
     oauth_client_secret?: string;
+    oauth_client_secret_set?: boolean;
   };
   tenantId?: string;
 }
