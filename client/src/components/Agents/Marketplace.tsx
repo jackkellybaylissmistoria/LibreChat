@@ -204,14 +204,25 @@ const AgentMarketplace: React.FC<AgentMarketplaceProps> = ({ className = '' }) =
           >
             {/* Hero Section - scrolls away */}
             {!isSmallScreen && (
-              <div className="container mx-auto max-w-4xl">
-                <div className={cn('mb-8 text-center', 'mt-12')}>
-                  <h1 className="mb-3 text-3xl font-bold tracking-tight text-text-primary md:text-5xl">
-                    {localize('com_agents_marketplace')}
-                  </h1>
-                  <p className="mx-auto mb-6 max-w-2xl text-lg text-text-secondary">
-                    {localize('com_agents_marketplace_subtitle')}
-                  </p>
+              <div className="container mx-auto max-w-4xl px-4">
+                <div className="relative mb-10 mt-16 e1-fade-up">
+                  {/* Soft amber halo behind the title */}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 -top-10 mx-auto h-40 max-w-md rounded-full bg-primary/10 blur-3xl dark:bg-primary/15"
+                  />
+                  <div className="relative text-center">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-border-light/70 bg-surface-tertiary/40 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-text-secondary dark:border-border-medium/60">
+                      <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                      {localize('com_agents_marketplace')}
+                    </span>
+                    <h1 className="font-display mt-5 text-4xl font-light tracking-[-0.04em] text-text-primary md:text-6xl">
+                      {localize('com_agents_marketplace')}
+                    </h1>
+                    <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-text-secondary md:text-lg">
+                      {localize('com_agents_marketplace_subtitle')}
+                    </p>
+                  </div>
                 </div>
               </div>
             )}

@@ -168,23 +168,40 @@ const AdminSettingsDialog: React.FC<AdminSettingsDialogProps> = ({
         <OGDialogContent
           className={
             dialogContentClassName ??
-            'w-11/12 max-w-lg border-border-light bg-surface-primary text-text-primary'
+            'w-11/12 max-w-lg overflow-hidden border-border-light/70 bg-surface-primary text-text-primary'
           }
         >
-          <OGDialogTitle>
-            {localize('com_ui_admin_settings_section', { section: localize(sectionKey) })}
-          </OGDialogTitle>
+          <div className="-mx-6 -mt-6 mb-2 border-b border-border-light/60 bg-gradient-to-b from-surface-tertiary/40 to-transparent px-6 pb-5 pt-6">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border-light/70 bg-surface-primary text-primary shadow-sm">
+                <ShieldEllipsis className="size-5" aria-hidden="true" />
+              </div>
+              <div className="min-w-0">
+                <OGDialogTitle className="font-display text-lg font-medium tracking-tight">
+                  {localize('com_ui_admin_settings_section', { section: localize(sectionKey) })}
+                </OGDialogTitle>
+                <p className="mt-0.5 text-xs text-text-tertiary">
+                  {localize('com_ui_admin_settings')}
+                </p>
+              </div>
+            </div>
+          </div>
 
           {/* Role selection dropdown */}
-          <div className="flex items-center gap-2">
-            <span className="font-medium">{localize('com_ui_role_select')}:</span>
+          <div className="flex items-center justify-between gap-3 rounded-xl border border-border-light/70 bg-surface-tertiary/40 px-3 py-2">
+            <span className="text-sm font-medium text-text-secondary">
+              {localize('com_ui_role_select')}
+            </span>
             <DropdownPopup
               unmountOnHide={true}
               menuId={menuId}
               isOpen={isRoleMenuOpen}
               setIsOpen={setIsRoleMenuOpen}
               trigger={
-                <Ariakit.MenuButton className="inline-flex min-w-[6rem] items-center justify-center rounded-lg border border-border-light bg-transparent px-2 py-1 text-text-primary transition-all ease-in-out hover:bg-surface-tertiary">
+                <Ariakit.MenuButton
+                  data-testid="admin-settings-role-dropdown"
+                  className="inline-flex min-w-[7rem] items-center justify-center rounded-lg border border-border-light/80 bg-surface-primary px-3 py-1.5 text-sm font-medium text-text-primary shadow-sm transition-colors duration-150 hover:border-primary/40 hover:bg-surface-hover"
+                >
                   {selectedRole}
                 </Ariakit.MenuButton>
               }
@@ -195,7 +212,7 @@ const AdminSettingsDialog: React.FC<AdminSettingsDialogProps> = ({
           </div>
           {/* Permissions form */}
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="py-5">
+            <div className="py-4">
               {permissions.map(({ permission, labelKey }) => {
                 const label = localize(labelKey);
                 const needsConfirm =
@@ -204,7 +221,10 @@ const AdminSettingsDialog: React.FC<AdminSettingsDialogProps> = ({
                   onPermissionConfirm;
 
                 return (
-                  <div key={permission}>
+                  <div
+                    key={permission}
+                    className="rounded-xl px-3 py-1 transition-colors duration-150 hover:bg-surface-tertiary/40"
+                  >
                     <LabelController
                       control={control}
                       permission={permission}
@@ -221,14 +241,13 @@ const AdminSettingsDialog: React.FC<AdminSettingsDialogProps> = ({
                     {showAdminWarning &&
                       selectedRole === SystemRoles.ADMIN &&
                       permission === Permissions.USE && (
-                        <div className="mb-2 max-w-full whitespace-normal break-words text-sm text-red-600">
-                          <span>{localize('com_ui_admin_access_warning')}</span>
-                          {'\n'}
+                        <div className="-mt-2 mb-3 rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-xs text-destructive">
+                          <span>{localize('com_ui_admin_access_warning')}</span>{' '}
                           <a
                             href="https://www.librechat.ai/docs/configuration/librechat_yaml/object_structure/interface"
                             target="_blank"
                             rel="noreferrer"
-                            className="text-blue-500 underline"
+                            className="font-medium underline underline-offset-2"
                           >
                             {localize('com_ui_more_info')}
                           </a>
@@ -238,10 +257,11 @@ const AdminSettingsDialog: React.FC<AdminSettingsDialogProps> = ({
                 );
               })}
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-2 border-t border-border-light/60 pt-4">
               <Button
                 type="submit"
                 variant="submit"
+                data-testid="admin-settings-save-button"
                 disabled={
                   isSubmitting ||
                   isLoading ||

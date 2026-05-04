@@ -433,3 +433,115 @@ textarea:focus {
 .e1-fade-up {
   animation: e1-fade-up 200ms ease-out both;
 }
+
+/* ---------- Skeleton fade-pulse (calmer than shimmer) ---------- */
+@keyframes e1-skeleton-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.85; }
+}
+.e1-skeleton {
+  animation: e1-skeleton-pulse 1.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: opacity;
+}
+
+/* ---------- Dialog / modal polish (admin, settings, prompts) ---------- */
+[role='dialog'][data-state='open'],
+.dialog-content,
+[data-radix-dialog-content] {
+  border-radius: 1.25rem !important;
+  border-color: hsl(var(--border) / 0.7) !important;
+  box-shadow:
+    0 1px 0 0 hsl(var(--border) / 0.5) inset,
+    0 24px 60px -20px rgb(0 0 0 / 0.18),
+    0 8px 16px -8px rgb(0 0 0 / 0.06) !important;
+}
+.dark [role='dialog'][data-state='open'],
+.dark [data-radix-dialog-content] {
+  box-shadow:
+    0 1px 0 0 hsl(0 0% 100% / 0.04) inset,
+    0 30px 80px -28px rgb(0 0 0 / 0.7),
+    0 10px 20px -10px rgb(0 0 0 / 0.4) !important;
+}
+
+[role='dialog'] [class*='DialogTitle'],
+[role='dialog'] [class*='dialog-title'],
+[data-radix-dialog-title] {
+  font-family: 'Outfit', system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Prompts panel header / file viewer / explore ---------- */
+[data-testid='nav-prompts-button'] + *,
+.prompts-header,
+[role='heading'][aria-level='1'],
+[role='heading'][aria-level='2'] {
+  letter-spacing: -0.02em;
+}
+
+/* Prompts list container — give it more breathing room */
+[data-testid='prompts-list'],
+nav[aria-label*='prompt' i] {
+  padding-top: 0.5rem;
+}
+
+/* ---------- Tabs (Radix Tabs primitive used in admin / agent detail) ---------- */
+[role='tablist'][data-orientation='horizontal'] {
+  gap: 0.25rem;
+}
+
+[role='tab'] {
+  border-radius: 9999px !important;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+[role='tab'][data-state='active'],
+[role='tab'][aria-selected='true'] {
+  background-color: hsl(var(--foreground)) !important;
+  color: hsl(var(--background)) !important;
+}
+
+/* ---------- Settings dialog tweaks ---------- */
+[data-testid='admin-settings-modal'] [role='tab'],
+[data-testid='settings-modal'] [role='tab'] {
+  font-weight: 500;
+}
+
+/* ---------- Switch / Toggle polish ---------- */
+[role='switch'][data-state='checked'] {
+  background-color: hsl(var(--primary)) !important;
+}
+
+/* ---------- Buttons in dialogs ---------- */
+[role='dialog'] button[type='submit'],
+[role='dialog'] button[data-variant='primary'] {
+  border-radius: 0.875rem !important;
+}
+
+/* ---------- Subtle divider line in cards ---------- */
+hr,
+[role='separator'] {
+  border-color: hsl(var(--border) / 0.6);
+}
+
+/* ---------- Marketplace tweaks ---------- */
+.marketplace-hero-glow {
+  position: absolute;
+  inset: -2rem auto auto 50%;
+  height: 12rem;
+  width: 30rem;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    hsl(var(--primary) / 0.12) 0%,
+    transparent 80%
+  );
+  pointer-events: none;
+}
+
+/* ---------- Prompts: empty / no results ---------- */
+[data-testid='no-prompts']:empty {
+  display: none;
+}

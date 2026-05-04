@@ -138,8 +138,10 @@ function ChatGroupItem({
     <>
       <div
         className={cn(
-          'group/prompt relative mb-1.5 rounded-xl border border-border-light bg-transparent transition-colors hover:bg-surface-secondary',
-          !isChatRoute && params.promptId === group._id && 'bg-surface-hover',
+          'group/prompt relative mb-2 overflow-hidden rounded-2xl border border-border-light/70 bg-surface-primary/60 transition-[border-color,background-color,transform,box-shadow] duration-150 ease-out',
+          'hover:-translate-y-px hover:border-primary/35 hover:bg-surface-primary hover:shadow-[0_8px_24px_-14px_rgba(0,0,0,0.10)]',
+          'dark:border-border-medium/55 dark:bg-surface-primary-alt/60 dark:hover:bg-surface-primary-alt',
+          !isChatRoute && params.promptId === group._id && 'border-primary/45 bg-surface-tertiary/60',
         )}
       >
         {/* Clickable overlay for card */}

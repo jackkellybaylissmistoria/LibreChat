@@ -73,7 +73,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onSearch, className = '' }
         value={searchTerm}
         onChange={handleChange}
         placeholder={localize('com_agents_search_placeholder')}
-        className="h-12 rounded-xl border-border-medium bg-transparent pl-12 pr-12 text-lg text-text-primary shadow-md transition-[border-color,box-shadow] duration-200 placeholder:text-text-secondary focus:border-border-heavy focus:shadow-lg focus:ring-0"
+        className="h-12 rounded-2xl border border-border-light/80 bg-surface-primary/70 pl-12 pr-12 text-base text-text-primary shadow-[0_1px_2px_rgba(0,0,0,0.03)] backdrop-blur-md transition-[border-color,box-shadow,transform] duration-150 placeholder:text-text-tertiary hover:border-border-medium hover:shadow-[0_4px_18px_-8px_rgba(0,0,0,0.10)] focus:border-primary/55 focus:shadow-[0_0_0_3px_hsl(var(--primary)/.15)] focus:ring-0 dark:border-border-medium/60 dark:bg-surface-primary-alt/70"
         aria-label={localize('com_agents_search_aria')}
         aria-describedby="search-instructions search-results-count"
         autoComplete="off"

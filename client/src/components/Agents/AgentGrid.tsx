@@ -5,6 +5,7 @@ import type t from 'librechat-data-provider';
 import { useMarketplaceAgentsInfiniteQuery } from '~/data-provider/Agents';
 import { useAgentCategories, useLocalize } from '~/hooks';
 import { useInfiniteScroll } from '~/hooks/useInfiniteScroll';
+import { AgentCardSkeleton } from '~/components/ui/Skeleton';
 import { useHasData } from './SmartLoader';
 import ErrorDisplay from './ErrorDisplay';
 import AgentCard from './AgentCard';
@@ -126,10 +127,18 @@ const AgentGrid: React.FC<AgentGridProps> = ({
     return categoryValue.charAt(0).toUpperCase() + categoryValue.slice(1);
   };
 
-  // Simple loading spinner
-  const loadingSpinner = (
-    <div className="flex justify-center py-12">
-      <Spinner className="h-8 w-8 text-primary" />
+  // Refined skeleton grid for initial loading
+  const loadingSkeleton = (
+    <div
+      className="mx-4 grid grid-cols-1 gap-6 e1-fade-up md:grid-cols-2"
+      role="status"
+      aria-busy="true"
+      aria-label={localize('com_agents_loading')}
+      data-testid="agent-grid-loading"
+    >
+      {Array.from({ length: 6 }).map((_, i) => (
+        <AgentCardSkeleton key={`agent-skel-${i}`} />
+      ))}
     </div>
   );
 
@@ -160,16 +169,34 @@ const AgentGrid: React.FC<AgentGridProps> = ({
       {/* Handle empty results with enhanced accessibility */}
       {(!currentAgents || currentAgents.length === 0) && !isLoading && !isFetching ? (
         <div
-          className="py-12 text-center text-text-secondary"
+          className="mx-auto flex max-w-sm flex-col items-center justify-center py-20 text-center text-text-secondary e1-fade-up"
           role="status"
           aria-live="polite"
-          aria-label={
-            searchQuery
-              ? localize('com_agents_search_empty_heading')
-              : localize('com_agents_empty_state_heading')
-          }
         >
-          <h3 className="mb-2 text-lg font-medium">{localize('com_agents_empty_state_heading')}</h3>
+          <div
+            className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-border-light/70 bg-surface-tertiary/60 dark:border-border-medium/60"
+            aria-hidden
+          >
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-text-tertiary"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+          </div>
+          <h3 className="font-display mb-2 text-lg font-medium tracking-tight text-text-primary">
+            {searchQuery
+              ? localize('com_agents_search_empty_heading')
+              : localize('com_agents_empty_state_heading')}
+          </h3>
         </div>
       ) : (
         <>
@@ -226,7 +253,7 @@ const AgentGrid: React.FC<AgentGridProps> = ({
   );
 
   if (isLoading || (isFetching && !isFetchingNextPage)) {
-    return loadingSpinner;
+    return loadingSkeleton;
   }
   return mainContent;
 };

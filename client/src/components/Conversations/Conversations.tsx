@@ -2,11 +2,12 @@ import { useMemo, memo, type FC, useCallback, useEffect, useRef } from 'react';
 import throttle from 'lodash/throttle';
 import { ChevronDown } from 'lucide-react';
 import { useRecoilValue } from 'recoil';
-import { Spinner, useMediaQuery } from '@librechat/client';
+import { useMediaQuery } from '@librechat/client';
 import { List, AutoSizer, CellMeasurer, CellMeasurerCache } from 'react-virtualized';
 import type { TConversation } from 'librechat-data-provider';
 import { useLocalize, TranslationKeys, useFavorites, useShowMarketplace } from '~/hooks';
 import FavoritesList from '~/components/Nav/Favorites/FavoritesList';
+import { ConvoSkeletonRow } from '~/components/ui/Skeleton';
 import { useActiveJobs } from '~/data-provider';
 import { groupConversationsByDate, cn } from '~/utils';
 import Convo from './Convo';
@@ -59,12 +60,14 @@ const MeasuredRow: FC<MeasuredRowProps> = memo(
 MeasuredRow.displayName = 'MeasuredRow';
 
 const LoadingSpinner = memo(() => {
-  const localize = useLocalize();
-
   return (
-    <div className="mx-auto mt-2 flex items-center justify-center gap-2">
-      <Spinner className="text-text-primary" />
-      <span className="animate-pulse text-text-primary">{localize('com_ui_loading')}</span>
+    <div
+      className="flex flex-col gap-1 px-1 pb-2 pt-1 e1-fade-up"
+      data-testid="conversation-list-loading"
+    >
+      <ConvoSkeletonRow widthPct={78} />
+      <ConvoSkeletonRow widthPct={62} />
+      <ConvoSkeletonRow widthPct={70} />
     </div>
   );
 });
@@ -371,9 +374,15 @@ const Conversations: FC<ConversationsProps> = ({
   return (
     <div className="relative flex h-full min-h-0 flex-col pb-2 text-sm text-text-primary">
       {isSearchLoading ? (
-        <div className="flex flex-1 items-center justify-center">
-          <Spinner className="text-text-primary" />
-          <span className="ml-2 text-text-primary">{localize('com_ui_loading')}</span>
+        <div
+          className="flex flex-1 flex-col gap-1 px-1 pt-2 e1-fade-up"
+          data-testid="conversation-search-loading"
+        >
+          <ConvoSkeletonRow widthPct={82} />
+          <ConvoSkeletonRow widthPct={66} />
+          <ConvoSkeletonRow widthPct={74} />
+          <ConvoSkeletonRow widthPct={58} />
+          <ConvoSkeletonRow widthPct={70} />
         </div>
       ) : (
         <div className="flex-1">

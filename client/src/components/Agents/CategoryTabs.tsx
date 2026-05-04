@@ -54,11 +54,11 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
 
   const loadingSkeleton = (
     <div className="w-full pb-2">
-      <div className="flex flex-wrap justify-center gap-1.5 px-4">
+      <div className="flex flex-wrap justify-center gap-2 px-4">
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            className="h-[36px] min-w-[80px] animate-pulse rounded-lg bg-surface-tertiary"
+            className="e1-skeleton h-[32px] min-w-[84px] rounded-full bg-surface-tertiary/70"
           />
         ))}
       </div>
@@ -144,39 +144,37 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
             : undefined
         }
       >
-        {categories.map((category, index) => (
-          <button
-            key={category.value}
-            id={`category-tab-${category.value}`}
-            onClick={() => onChange(category.value)}
-            onKeyDown={(e) => handleKeyDown(e, category.value)}
-            className={cn(
-              'relative cursor-pointer select-none whitespace-nowrap px-3 py-2 transition-all duration-200',
-              isSmallScreen ? 'min-w-fit flex-shrink-0' : '',
-              activeTab === category.value
-                ? 'rounded-t-lg bg-surface-hover text-text-primary'
-                : 'rounded-lg bg-surface-secondary text-text-secondary hover:bg-surface-hover hover:text-text-primary active:scale-95',
-            )}
-            role="tab"
-            aria-selected={activeTab === category.value}
-            aria-controls={`tabpanel-${category.value}`}
-            tabIndex={activeTab === category.value ? 0 : -1}
-            aria-label={localize('com_agents_category_tab_label', {
-              category: getCategoryDisplayName(category),
-              position: index + 1,
-              total: categories.length,
-            })}
-          >
-            {getCategoryDisplayName(category)}
-            {/* Underline for active tab */}
-            {activeTab === category.value && (
-              <div
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-text-primary"
-                aria-hidden="true"
-              />
-            )}
-          </button>
-        ))}
+        {categories.map((category, index) => {
+          const isActive = activeTab === category.value;
+          return (
+            <button
+              key={category.value}
+              id={`category-tab-${category.value}`}
+              onClick={() => onChange(category.value)}
+              onKeyDown={(e) => handleKeyDown(e, category.value)}
+              data-testid={`category-tab-${category.value}`}
+              className={cn(
+                'group relative cursor-pointer select-none whitespace-nowrap rounded-full',
+                'px-4 py-1.5 text-sm font-medium transition-all duration-150 ease-out',
+                isSmallScreen ? 'min-w-fit flex-shrink-0' : '',
+                isActive
+                  ? 'border border-transparent bg-text-primary text-surface-primary shadow-[0_4px_14px_-6px_rgba(0,0,0,0.18)]'
+                  : 'border border-border-light/70 bg-transparent text-text-secondary hover:-translate-y-0.5 hover:border-primary/30 hover:bg-surface-tertiary/50 hover:text-text-primary dark:border-border-medium/50',
+              )}
+              role="tab"
+              aria-selected={isActive}
+              aria-controls={`tabpanel-${category.value}`}
+              tabIndex={isActive ? 0 : -1}
+              aria-label={localize('com_agents_category_tab_label', {
+                category: getCategoryDisplayName(category),
+                position: index + 1,
+                total: categories.length,
+              })}
+            >
+              {getCategoryDisplayName(category)}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
