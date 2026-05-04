@@ -1,4 +1,4 @@
-import { logger, webSearchKeys } from '@librechat/data-schemas';
+import { logger, webSearchKeys, getCredentialEnvError } from '@librechat/data-schemas';
 import { Constants, extractVariableName } from 'librechat-data-provider';
 import type { TCustomConfig } from 'librechat-data-provider';
 import type { AppConfig } from '@librechat/data-schemas';
@@ -101,6 +101,21 @@ function checkPasswordReset() {
  * @param {Function} options.checkEmailConfig - Function to check email configuration
  */
 export function checkVariables() {
+  // Hard-stop on broken encryption material — saving user keys / agent
+  // tokens / 2FA secrets all fail with a cryptic "Invalid key length"
+  // when CREDS_KEY/CREDS_IV are wrong. Surface the issue at startup with
+  // a clear, actionable message.
+  const credsError = getCredentialEnvError();
+  if (credsError) {
+    logger.error(
+      `❗❗❗
+      \nEncryption material is invalid: ${credsError}
+      \nUntil you fix this, saving API keys (OpenAI, Anthropic, OpenRouter, etc.),
+      agent action tokens, 2FA secrets, and OAuth refresh tokens will fail.
+      \n❗❗❗`,
+    );
+  }
+
   let hasDefaultSecrets = false;
   for (const [key, value] of Object.entries(secretDefaults)) {
     if (process.env[key] === value) {

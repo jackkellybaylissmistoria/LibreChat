@@ -10,6 +10,44 @@ const key = Buffer.from(process.env.CREDS_KEY ?? '', 'hex');
 const iv = Buffer.from(process.env.CREDS_IV ?? '', 'hex');
 const algorithm = 'AES-CBC';
 
+/**
+ * Builds a clear, actionable error message describing what's wrong with
+ * the CREDS_KEY / CREDS_IV environment variables.
+ *
+ * @returns A descriptive error string, or null when both values are valid.
+ */
+export function getCredentialEnvError(): string | null {
+  const rawKey = process.env.CREDS_KEY ?? '';
+  const rawIv = process.env.CREDS_IV ?? '';
+  const validHex = (s: string) => /^[0-9a-fA-F]*$/.test(s);
+
+  if (!rawKey) {
+    return '`CREDS_KEY` is missing. Set it to a 64-character hex string in your environment (.env). Generate one at https://www.librechat.ai/toolkit/creds_generator';
+  }
+  if (!validHex(rawKey) || rawKey.length !== 64) {
+    return `\`CREDS_KEY\` must be a 64-character hex string (32 bytes when decoded). Got length=${rawKey.length}, hex-valid=${validHex(rawKey)}. Generate one at https://www.librechat.ai/toolkit/creds_generator`;
+  }
+  if (!rawIv) {
+    return '`CREDS_IV` is missing. Set it to a 32-character hex string in your environment (.env).';
+  }
+  if (!validHex(rawIv) || rawIv.length !== 32) {
+    return `\`CREDS_IV\` must be a 32-character hex string (16 bytes when decoded). Got length=${rawIv.length}, hex-valid=${validHex(rawIv)}.`;
+  }
+  return null;
+}
+
+/**
+ * Throws a descriptive error when the loaded encryption material is unusable.
+ * Called by encrypt/decrypt helpers so the underlying SubtleCrypto/Node crypto
+ * errors don't surface as cryptic "Invalid key length" / "DataError" strings.
+ */
+function assertCryptoMaterial(): void {
+  const error = getCredentialEnvError();
+  if (error) {
+    throw new Error(`[encryption] ${error}`);
+  }
+}
+
 export async function signPayload({
   payload,
   secret,
@@ -32,6 +70,7 @@ export async function hashToken(str: string): Promise<string> {
  * @returns The encrypted string in hex format
  */
 export async function encrypt(value: string): Promise<string> {
+  assertCryptoMaterial();
   const cryptoKey = await webcrypto.subtle.importKey('raw', key, { name: algorithm }, false, [
     'encrypt',
   ]);
@@ -51,6 +90,7 @@ export async function encrypt(value: string): Promise<string> {
  * @returns The decrypted plaintext
  */
 export async function decrypt(encryptedValue: string): Promise<string> {
+  assertCryptoMaterial();
   const cryptoKey = await webcrypto.subtle.importKey('raw', key, { name: algorithm }, false, [
     'decrypt',
   ]);
@@ -121,8 +161,11 @@ const algorithm_v3 = 'aes-256-ctr';
  * @returns The encrypted string with a "v3:" prefix.
  */
 export function encryptV3(value: string): string {
+  assertCryptoMaterial();
   if (key.length !== 32) {
-    throw new Error(`Invalid key length: expected 32 bytes, got ${key.length} bytes`);
+    throw new Error(
+      `[encryption] Invalid CREDS_KEY length: expected 32 bytes (64 hex chars), got ${key.length} bytes. Generate a valid one at https://www.librechat.ai/toolkit/creds_generator`,
+    );
   }
   const iv_v3 = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(algorithm_v3, key, iv_v3);
