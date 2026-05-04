@@ -484,6 +484,8 @@ export type TAuthContext = {
   logout: (redirect?: string) => void;
   setError: React.Dispatch<React.SetStateAction<string | undefined>>;
   roles?: Record<string, t.TRole | null | undefined>;
+  /** True once role permissions have finished loading for the current user. */
+  rolesLoaded?: boolean;
 };
 
 export type TUserContext = {

@@ -10,7 +10,7 @@ import VariablesDropdown from '../editor/VariablesDropdown';
 import PromptVariables from '../display/PromptVariables';
 import Description from '../fields/Description';
 import { usePromptGroupsContext } from '~/Providers';
-import { useLocalize, useHasAccess } from '~/hooks';
+import { useLocalize, useAccessStatus } from '~/hooks';
 import Command from '../fields/Command';
 import { useCreatePrompt } from '~/data-provider';
 import { cn } from '~/utils';
@@ -43,7 +43,7 @@ const CreatePromptForm = ({
   const localize = useLocalize();
   const navigate = useNavigate();
   const { hasAccess: hasUseAccess } = usePromptGroupsContext() ?? {};
-  const hasCreateAccess = useHasAccess({
+  const { hasAccess: hasCreateAccess, isLoading: isLoadingCreateAccess } = useAccessStatus({
     permissionType: PermissionTypes.PROMPTS,
     permission: Permissions.CREATE,
   });
@@ -51,7 +51,8 @@ const CreatePromptForm = ({
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>;
-    if (!hasAccess && !onSuccess) {
+    // Don't redirect while role permissions are still loading
+    if (!hasAccess && !onSuccess && !isLoadingCreateAccess) {
       timeoutId = setTimeout(() => {
         navigate('/c/new');
       }, 1000);
@@ -59,7 +60,7 @@ const CreatePromptForm = ({
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [hasAccess, navigate, onSuccess]);
+  }, [hasAccess, navigate, onSuccess, isLoadingCreateAccess]);
 
   const methods = useForm({
     defaultValues: {

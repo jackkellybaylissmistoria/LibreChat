@@ -44,4 +44,26 @@ const useHasAccess = ({
   return hasAccess;
 };
 
+/**
+ * Same as `useHasAccess` but also reports whether role permissions have
+ * finished loading. Used by access-gated routes/components to avoid
+ * redirecting before role data has resolved on direct URL navigation.
+ */
+export const useAccessStatus = ({
+  permissionType,
+  permission,
+}: {
+  permissionType: PermissionTypes;
+  permission: Permissions;
+}) => {
+  const authContext = useContext(AuthContext);
+  const hasAccess = useHasAccess({ permissionType, permission });
+  // `rolesLoaded` is true only after the relevant role API has resolved.
+  // If we're not authenticated yet, treat it as "loaded" so callers
+  // that gate on auth can act immediately.
+  const isLoading =
+    !!authContext?.isAuthenticated && authContext?.rolesLoaded === false;
+  return { hasAccess, isLoading };
+};
+
 export default useHasAccess;

@@ -55,15 +55,46 @@ const AuthContextProvider = ({
   const userRoleName = user?.role ?? '';
   const isCustomRole = isAuthenticated && !!user?.role && !isSystemRoleName(user.role);
 
-  const { data: userRole = null } = useGetRole(SystemRoles.USER, {
+  const { data: userRole = null, isLoading: isLoadingUserRole } = useGetRole(SystemRoles.USER, {
     enabled: !!(isAuthenticated && (user?.role ?? '')),
   });
-  const { data: adminRole = null } = useGetRole(SystemRoles.ADMIN, {
+  const { data: adminRole = null, isLoading: isLoadingAdminRole } = useGetRole(SystemRoles.ADMIN, {
     enabled: !!(isAuthenticated && user?.role === SystemRoles.ADMIN),
   });
-  const { data: customRole = null } = useGetRole(isCustomRole ? userRoleName : '_', {
-    enabled: isCustomRole,
-  });
+  const { data: customRole = null, isLoading: isLoadingCustomRole } = useGetRole(
+    isCustomRole ? userRoleName : '_',
+    {
+      enabled: isCustomRole,
+    },
+  );
+
+  // Are role permissions resolved? Used by access gates to avoid redirecting
+  // before role data has finished loading on direct URL navigation.
+  const rolesLoaded = useMemo(() => {
+    if (!isAuthenticated || !user?.role) {
+      return false;
+    }
+    if (isLoadingUserRole || !userRole) {
+      return false;
+    }
+    if (user.role === SystemRoles.ADMIN && (isLoadingAdminRole || !adminRole)) {
+      return false;
+    }
+    if (isCustomRole && (isLoadingCustomRole || !customRole)) {
+      return false;
+    }
+    return true;
+  }, [
+    isAuthenticated,
+    user?.role,
+    userRole,
+    adminRole,
+    customRole,
+    isCustomRole,
+    isLoadingUserRole,
+    isLoadingAdminRole,
+    isLoadingCustomRole,
+  ]);
 
   const navigate = useNavigate();
 
@@ -280,6 +311,7 @@ const AuthContextProvider = ({
         [SystemRoles.ADMIN]: adminRole,
         ...(isCustomRole && customRole ? { [userRoleName]: customRole } : {}),
       },
+      rolesLoaded,
       isAuthenticated,
     }),
 
@@ -293,6 +325,7 @@ const AuthContextProvider = ({
       isCustomRole,
       userRoleName,
       customRole,
+      rolesLoaded,
     ],
   );
 
