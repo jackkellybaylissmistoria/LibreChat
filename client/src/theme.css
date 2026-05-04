@@ -525,6 +525,15 @@ hr,
   border-color: hsl(var(--border) / 0.6);
 }
 
+/* In dark mode, dialog-internal dividers should be very faint to avoid
+ * showing up as harsh "white lines" against the deep background. */
+.dark [role='dialog'] hr,
+.dark [data-radix-dialog-content] hr,
+.dark [role='dialog'] [role='separator'],
+.dark [data-radix-dialog-content] [role='separator'] {
+  border-color: hsl(0 0% 100% / 0.06);
+}
+
 /* ---------- Marketplace tweaks ---------- */
 .marketplace-hero-glow {
   position: absolute;

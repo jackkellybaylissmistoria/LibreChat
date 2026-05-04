@@ -140,7 +140,7 @@ const AgentDetailContent: React.FC<AgentDetailContentProps> = ({ agent }) => {
   return (
     <OGDialogContent className="overflow-hidden border-border-light/70 p-0 sm:max-w-lg">
       {/* Cover band with soft amber halo */}
-      <div className="relative h-28 overflow-hidden border-b border-border-light/60 bg-gradient-to-br from-surface-tertiary/40 via-surface-primary to-surface-primary dark:from-surface-primary-alt dark:via-surface-primary dark:to-surface-primary">
+      <div className="relative h-28 overflow-hidden bg-gradient-to-br from-surface-tertiary/40 via-surface-primary to-surface-primary dark:from-surface-primary-alt dark:via-surface-primary dark:to-surface-primary">
         <span
           aria-hidden
           className="absolute -top-10 left-1/2 h-40 w-72 -translate-x-1/2 rounded-full bg-primary/15 blur-3xl dark:bg-primary/20"
@@ -148,7 +148,7 @@ const AgentDetailContent: React.FC<AgentDetailContentProps> = ({ agent }) => {
         {/* dot pattern */}
         <span
           aria-hidden
-          className="absolute inset-0 opacity-[0.18] dark:opacity-[0.12]"
+          className="absolute inset-0 opacity-[0.18] dark:opacity-[0.10]"
           style={{
             backgroundImage:
               'radial-gradient(currentColor 0.5px, transparent 0.5px)',
@@ -189,14 +189,14 @@ const AgentDetailContent: React.FC<AgentDetailContentProps> = ({ agent }) => {
 
         {/* Description */}
         {agent?.description && (
-          <p className="mt-5 max-h-48 overflow-y-auto whitespace-pre-wrap rounded-xl border border-border-light/60 bg-surface-tertiary/30 px-4 py-3 text-center text-sm leading-relaxed text-text-secondary dark:border-border-medium/50 dark:bg-surface-primary-alt/60">
+          <p className="mt-5 max-h-48 overflow-y-auto whitespace-pre-wrap rounded-xl border border-border-light/60 bg-surface-tertiary/30 px-4 py-3 text-center text-sm leading-relaxed text-text-secondary dark:border-border-medium/40 dark:bg-surface-primary-alt/40">
             {agent.description}
           </p>
         )}
       </div>
 
       {/* Action footer */}
-      <div className="mt-6 flex items-center gap-2 border-t border-border-light/60 bg-surface-tertiary/20 px-5 py-4 dark:bg-surface-primary-alt/40">
+      <div className="mt-6 flex items-center gap-2 bg-surface-tertiary/20 px-5 py-4 dark:bg-surface-primary-alt/40">
         <Button
           variant="outline"
           size="icon"
@@ -204,7 +204,7 @@ const AgentDetailContent: React.FC<AgentDetailContentProps> = ({ agent }) => {
           title={isFavorite ? localize('com_ui_unpin') : localize('com_ui_pin')}
           aria-label={isFavorite ? localize('com_ui_unpin') : localize('com_ui_pin')}
           data-testid="agent-detail-pin-button"
-          className="h-10 w-10 rounded-xl border-border-light/80 bg-surface-primary text-text-secondary transition-colors duration-150 hover:border-primary/40 hover:text-primary"
+          className="h-10 w-10 rounded-xl border-border-light/80 bg-surface-primary text-text-secondary transition-colors duration-150 hover:border-primary/40 hover:text-primary dark:border-border-medium/55"
         >
           {isFavorite ? <PinOff className="h-4 w-4" /> : <Pin className="h-4 w-4" />}
         </Button>
@@ -215,7 +215,7 @@ const AgentDetailContent: React.FC<AgentDetailContentProps> = ({ agent }) => {
           title={localize('com_agents_copy_link')}
           aria-label={localize('com_agents_copy_link')}
           data-testid="agent-detail-copy-link-button"
-          className="h-10 w-10 rounded-xl border-border-light/80 bg-surface-primary text-text-secondary transition-colors duration-150 hover:border-primary/40 hover:text-primary"
+          className="h-10 w-10 rounded-xl border-border-light/80 bg-surface-primary text-text-secondary transition-colors duration-150 hover:border-primary/40 hover:text-primary dark:border-border-medium/55"
         >
           <Link className="h-4 w-4" aria-hidden="true" />
         </Button>

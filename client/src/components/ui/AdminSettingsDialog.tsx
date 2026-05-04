@@ -171,7 +171,7 @@ const AdminSettingsDialog: React.FC<AdminSettingsDialogProps> = ({
             'w-11/12 max-w-lg overflow-hidden border-border-light/70 bg-surface-primary text-text-primary'
           }
         >
-          <div className="-mx-6 -mt-6 mb-2 border-b border-border-light/60 bg-gradient-to-b from-surface-tertiary/40 to-transparent px-6 pb-5 pt-6">
+          <div className="-mx-6 -mt-6 mb-2 border-b border-border-light/60 bg-gradient-to-b from-surface-tertiary/40 to-transparent px-6 pb-5 pt-6 dark:border-border-medium/30">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border-light/70 bg-surface-primary text-primary shadow-sm">
                 <ShieldEllipsis className="size-5" aria-hidden="true" />
@@ -257,7 +257,7 @@ const AdminSettingsDialog: React.FC<AdminSettingsDialogProps> = ({
                 );
               })}
             </div>
-            <div className="flex justify-end gap-2 border-t border-border-light/60 pt-4">
+            <div className="flex justify-end gap-2 border-t border-border-light/60 pt-4 dark:border-border-medium/30">
               <Button
                 type="submit"
                 variant="submit"
