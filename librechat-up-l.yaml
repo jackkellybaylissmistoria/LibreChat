@@ -9,7 +9,7 @@ interface:
   termsOfService:
     externalUrl: 'https://www.librechat.ai/demo/terms'
     openNewTab: true
-    modalAcceptance: true
+    modalAcceptance: false
     modalTitle: 'Demo Terms of Service'
     modalContent: |
       By using this demo, you agree to the LibreChat Terms of Service.
