@@ -2,6 +2,10 @@ version: 1.2.4
 
 cache: true
 
+# File storage configuration
+# Single strategy for all file types (legacy format, still supported)
+fileStrategy: "s3"
+
 interface:
   privacyPolicy:
     externalUrl: 'https://www.librechat.ai/demo/privacy'
